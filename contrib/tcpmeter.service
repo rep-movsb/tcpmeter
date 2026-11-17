@@ -1,0 +1,18 @@
+# systemd user unit. Install with:
+#   mkdir -p ~/.config/systemd/user
+#   cp contrib/tcpmeter.service ~/.config/systemd/user/
+#   # edit ExecStart: script path and your proxy address(es)
+#   systemctl --user daemon-reload
+#   systemctl --user enable --now tcpmeter
+#   journalctl --user -u tcpmeter -f
+[Unit]
+Description=tcpmeter byte-counting proxy relay
+After=network-online.target
+
+[Service]
+ExecStart=%h/tcpmeter/tcpmeter.py 127.0.0.1:1080=proxy.example.com:1080
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=default.target
